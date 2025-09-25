@@ -52,8 +52,8 @@ const Sidebar = ({ userRole, userData, onLogout }) => {
       // Default provider (doctor)
       return [
         { label: 'Dashboard', path: '/dashboard/doctor', icon: '🏠' },
-        { label: 'Patient Search', path: '/search', icon: '🔍' },
-        { label: 'Appointments', path: '/appointments', icon: '📅' },
+        { label: 'Patient Search', path: '/provider/patients/search', icon: '🔍' },
+        { label: 'Appointments', path: '/provider/appointments', icon: '📅' },
         { label: 'My Profile', path: '/profile', icon: '👤' },
         { label: 'Settings', path: '/settings', icon: '⚙️' },
       ];

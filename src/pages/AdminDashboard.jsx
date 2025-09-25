@@ -375,7 +375,7 @@ const AdminDashboard = () => {
                               : 'bg-green-600 hover:bg-green-700'
                           }
                         >
-                          {provider.status === 'active' ? 'Suspend License' : 'Activate License'}
+                          {provider.status === 'active' ? 'Suspend' : 'Activate'}
                         </Button>
                         <Button size="sm" variant="secondary">
                           View Details

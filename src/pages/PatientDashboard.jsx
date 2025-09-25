@@ -157,41 +157,149 @@ const PatientDashboard = () => {
 
 // Appointments Tab Component
 const AppointmentsTab = () => {
-  const appointments = [
+  const [appointments, setAppointments] = useState([
     {
       id: 1,
       doctor: 'Dr. Sarah Johnson',
       specialization: 'Cardiologist',
+      type: 'Consultation',
       date: '2024-01-15',
-      time: '10:00 AM',
-      status: 'confirmed',
-      type: 'Consultation'
+      time: '11:00 AM',
+      status: 'confirmed'
     },
     {
       id: 2,
       doctor: 'Dr. Michael Chen',
       specialization: 'General Physician',
+      type: 'Follow-up',
       date: '2024-01-20',
       time: '2:30 PM',
-      status: 'pending',
-      type: 'Follow-up'
+      status: 'pending'
     },
     {
       id: 3,
       doctor: 'Dr. Emily Davis',
       specialization: 'Dermatologist',
+      type: 'Consultation',
       date: '2024-01-25',
       time: '11:15 AM',
-      status: 'completed',
-      type: 'Consultation'
+      status: 'completed'
     }
-  ];
+  ]);
+
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingForm, setBookingForm] = useState({
+    specialization: '',
+    doctor: '',
+    appointmentType: 'consultation',
+    preferredDate: '',
+    preferredTime: '',
+    symptoms: '',
+    notes: ''
+  });
+
+  const availableDoctors = {
+    'cardiology': [
+      { name: 'Dr. Sarah Johnson', specialization: 'Cardiologist' },
+      { name: 'Dr. Rajesh Gupta', specialization: 'Cardiologist' }
+    ],
+    'general': [
+      { name: 'Dr. Michael Chen', specialization: 'General Physician' },
+      { name: 'Dr. Priya Sharma', specialization: 'General Physician' }
+    ],
+    'dermatology': [
+      { name: 'Dr. Emily Davis', specialization: 'Dermatologist' },
+      { name: 'Dr. Amit Kumar', specialization: 'Dermatologist' }
+    ],
+    'orthopedics': [
+      { name: 'Dr. John Smith', specialization: 'Orthopedic Surgeon' },
+      { name: 'Dr. Kavita Patel', specialization: 'Orthopedic Surgeon' }
+    ],
+    'pediatrics': [
+      { name: 'Dr. Lisa Wong', specialization: 'Pediatrician' },
+      { name: 'Dr. Ravi Menon', specialization: 'Pediatrician' }
+    ]
+  };
+
+  const handleReschedule = (appointmentId) => {
+    const appointment = appointments.find(apt => apt.id === appointmentId);
+    if (appointment) {
+      const newDate = prompt('Enter new date (YYYY-MM-DD):', appointment.date);
+      const newTime = prompt('Enter new time (HH:MM AM/PM):', appointment.time);
+      
+      if (newDate && newTime) {
+        setAppointments(prev => prev.map(apt => 
+          apt.id === appointmentId 
+            ? { ...apt, date: newDate, time: newTime, status: 'pending' }
+            : apt
+        ));
+        alert('Appointment rescheduled successfully!');
+      }
+    }
+  };
+
+  const handleCancel = (appointmentId) => {
+    const confirmed = window.confirm('Are you sure you want to cancel this appointment?');
+    if (confirmed) {
+      setAppointments(prev => prev.map(apt => 
+        apt.id === appointmentId 
+          ? { ...apt, status: 'cancelled' }
+          : apt
+      ));
+      alert('Appointment cancelled successfully!');
+    }
+  };
+
+  const handleBookingInputChange = (e) => {
+    const { name, value } = e.target;
+    setBookingForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleBookAppointment = (e) => {
+    e.preventDefault();
+    
+    if (!bookingForm.specialization || !bookingForm.doctor || !bookingForm.preferredDate || !bookingForm.preferredTime) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    const newAppointment = {
+      id: appointments.length + 1,
+      doctor: bookingForm.doctor,
+      specialization: availableDoctors[bookingForm.specialization]?.find(doc => doc.name === bookingForm.doctor)?.specialization || bookingForm.specialization,
+      type: bookingForm.appointmentType,
+      date: bookingForm.preferredDate,
+      time: bookingForm.preferredTime,
+      status: 'pending'
+    };
+
+    setAppointments(prev => [...prev, newAppointment]);
+    setShowBookingModal(false);
+    setBookingForm({
+      specialization: '',
+      doctor: '',
+      appointmentType: 'consultation',
+      preferredDate: '',
+      preferredTime: '',
+      symptoms: '',
+      notes: ''
+    });
+    
+    alert('Appointment booked successfully! You will receive a confirmation shortly.');
+  };
+
+  const getDoctorsForSpecialization = (specialization) => {
+    return availableDoctors[specialization] || [];
+  };
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-gray-900">My Appointments</h2>
-        <Button>Book New Appointment</Button>
+        <Button onClick={() => setShowBookingModal(true)}>Book New Appointment</Button>
       </div>
 
       <div className="space-y-4">
@@ -216,10 +324,22 @@ const AppointmentsTab = () => {
                 }`}>
                   {appointment.status}
                 </span>
-                {appointment.status !== 'completed' && (
+                {appointment.status !== 'completed' && appointment.status !== 'cancelled' && (
                   <div className="mt-2 space-x-2">
-                    <Button size="sm" variant="secondary">Reschedule</Button>
-                    <Button size="sm" variant="danger">Cancel</Button>
+                    <Button 
+                      size="sm" 
+                      variant="secondary"
+                      onClick={() => handleReschedule(appointment.id)}
+                    >
+                      Reschedule
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="danger"
+                      onClick={() => handleCancel(appointment.id)}
+                    >
+                      Cancel
+                    </Button>
                   </div>
                 )}
               </div>
@@ -227,6 +347,164 @@ const AppointmentsTab = () => {
           </Card>
         ))}
       </div>
+
+      {/* Booking Modal */}
+      {showBookingModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-900">Book New Appointment</h3>
+              <button
+                onClick={() => setShowBookingModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <span className="text-2xl">&times;</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleBookAppointment} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Specialization *
+                  </label>
+                  <select
+                    name="specialization"
+                    value={bookingForm.specialization}
+                    onChange={handleBookingInputChange}
+                    required
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select Specialization</option>
+                    <option value="general">General Medicine</option>
+                    <option value="cardiology">Cardiology</option>
+                    <option value="dermatology">Dermatology</option>
+                    <option value="orthopedics">Orthopedics</option>
+                    <option value="pediatrics">Pediatrics</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Doctor *
+                  </label>
+                  <select
+                    name="doctor"
+                    value={bookingForm.doctor}
+                    onChange={handleBookingInputChange}
+                    required
+                    disabled={!bookingForm.specialization}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                  >
+                    <option value="">Select Doctor</option>
+                    {getDoctorsForSpecialization(bookingForm.specialization).map((doctor, index) => (
+                      <option key={index} value={doctor.name}>
+                        {doctor.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Appointment Type
+                  </label>
+                  <select
+                    name="appointmentType"
+                    value={bookingForm.appointmentType}
+                    onChange={handleBookingInputChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="consultation">Consultation</option>
+                    <option value="follow-up">Follow-up</option>
+                    <option value="check-up">Check-up</option>
+                    <option value="emergency">Emergency</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Preferred Date *
+                  </label>
+                  <input
+                    type="date"
+                    name="preferredDate"
+                    value={bookingForm.preferredDate}
+                    onChange={handleBookingInputChange}
+                    required
+                    min={new Date().toISOString().split('T')[0]}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Preferred Time *
+                  </label>
+                  <select
+                    name="preferredTime"
+                    value={bookingForm.preferredTime}
+                    onChange={handleBookingInputChange}
+                    required
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select Time</option>
+                    <option value="9:00 AM">9:00 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="12:00 PM">12:00 PM</option>
+                    <option value="2:00 PM">2:00 PM</option>
+                    <option value="3:00 PM">3:00 PM</option>
+                    <option value="4:00 PM">4:00 PM</option>
+                    <option value="5:00 PM">5:00 PM</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Symptoms/Reason for Visit
+                </label>
+                <textarea
+                  name="symptoms"
+                  value={bookingForm.symptoms}
+                  onChange={handleBookingInputChange}
+                  rows="3"
+                  placeholder="Describe your symptoms or reason for the appointment..."
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Additional Notes
+                </label>
+                <textarea
+                  name="notes"
+                  value={bookingForm.notes}
+                  onChange={handleBookingInputChange}
+                  rows="2"
+                  placeholder="Any additional information or special requests..."
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+                />
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setShowBookingModal(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  Book Appointment
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/image 53.png';
 
 const Navbar = ({ showBackButton = false, onBackClick }) => {
   const navigate = useNavigate();
@@ -61,9 +62,9 @@ const Navbar = ({ showBackButton = false, onBackClick }) => {
                 </svg>
               </button>
             )}
-            <h1 className="text-xl font-bold text-gray-800">
-              Swasthya Sutra
-            </h1>
+            <div className="flex items-center">
+              <img src={logo} alt="Swasthya Sutra Logo" className="h-12 w-auto" />
+            </div>
           </div>
 
           <div className="flex items-center space-x-4">

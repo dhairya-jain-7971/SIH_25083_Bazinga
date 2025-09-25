@@ -38,13 +38,6 @@ const Onboarding = () => {
       icon: '💊',
       color: 'bg-orange-500',
     },
-    {
-      id: 'admin',
-      title: 'Admin',
-      description: 'Manage system, providers, and monitor activity',
-      icon: '👑',
-      color: 'bg-red-500',
-    },
   ];
 
   const handleRoleSelect = (roleId) => {
@@ -60,8 +53,6 @@ const Onboarding = () => {
       navigate('/register/laboratory');
     } else if (selectedRole === 'chemist') {
       navigate('/register/chemist');
-    } else if (selectedRole === 'admin') {
-      navigate('/dashboard/admin');
     }
   };
 
@@ -87,7 +78,7 @@ const Onboarding = () => {
             Select Your Role
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {roles.map((role) => (
               <Card
                 key={role.id}
