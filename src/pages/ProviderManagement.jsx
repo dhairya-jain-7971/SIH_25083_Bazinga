@@ -35,7 +35,7 @@ const ProviderManagement = () => {
     const mockProviders = [
       {
         id: 'DOC001',
-        name: 'Dr. John Smith',
+        name: 'Dr. Kane',
         type: 'doctor',
         email: 'john.smith@example.com',
         phone: '+91 9876543210',
@@ -50,9 +50,9 @@ const ProviderManagement = () => {
       },
       {
         id: 'DOC002',
-        name: 'Dr. Sarah Johnson',
+        name: 'Dr. Kohli',
         type: 'doctor',
-        email: 'sarah.johnson@example.com',
+        email: 'virat.kohli@example.com',
         phone: '+91 9876543211',
         registrationDate: '2024-01-10',
         status: 'suspended',
@@ -65,9 +65,9 @@ const ProviderManagement = () => {
       },
       {
         id: 'DOC003',
-        name: 'Dr. Michael Brown',
+        name: 'Dr. Cristiano Ronaldo',
         type: 'doctor',
-        email: 'michael.brown@example.com',
+        email: 'cristiano.ronaldo@example.com',
         phone: '+91 9876543216',
         registrationDate: '2024-01-12',
         status: 'active',

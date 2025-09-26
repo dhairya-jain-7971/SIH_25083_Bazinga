@@ -31,33 +31,33 @@ const ChemistDashboard = () => {
     const mockPrescriptions = [
       {
         id: 'PRE001',
-        patientName: 'John Doe',
+        patientName: 'Owais Kazi',
         patientId: 'PAT001',
         phone: '+91 9876543210',
         medicines: ['Paracetamol 500mg', 'Cough Syrup'],
         prescribedDate: '2024-01-10',
         status: 'pending',
-        doctorName: 'Dr. Smith'
+        doctorName: 'Dr. Sneha'
       },
       {
         id: 'PRE002',
-        patientName: 'Jane Smith',
+        patientName: 'Aarya Gupta',
         patientId: 'PAT002',
         phone: '+91 9876543211',
         medicines: ['Amoxicillin 250mg', 'Pain Relief Gel'],
         prescribedDate: '2024-01-09',
         status: 'ready',
-        doctorName: 'Dr. Johnson'
+        doctorName: 'Dr. Palekar'
       },
       {
         id: 'PRE003',
-        patientName: 'Robert Johnson',
+        patientName: 'Rishab Hanvante',
         patientId: 'PAT003',
         phone: '+91 9876543212',
         medicines: ['Vitamin D3', 'Calcium Tablets'],
         prescribedDate: '2024-01-08',
         status: 'completed',
-        doctorName: 'Dr. Brown'
+        doctorName: 'Dr. Tamboli'
       }
     ];
     setPrescriptions(mockPrescriptions);
@@ -118,6 +118,18 @@ const ChemistDashboard = () => {
     }
   };
 
+  const handleViewInventory = () => {
+    navigate('/chemist/inventory');
+  };
+
+  const handleViewSalesReport = () => {
+    navigate('/chemist/sales');
+  };
+
+  const handleViewCustomerSupport = () => {
+    navigate('/chemist/support');
+  };
+
   const handleCallPatient = (phone) => {
     window.open(`tel:${phone}`);
   };
@@ -143,7 +155,7 @@ const ChemistDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <Navbar showAdminPanel={false} />
 
       <div className="flex">
         <Sidebar
@@ -343,7 +355,7 @@ const ChemistDashboard = () => {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Manage Inventory</h3>
               <p className="text-sm text-gray-600 mb-4">Update stock levels and add new medicines</p>
-              <Button size="sm">View Inventory</Button>
+              <Button size="sm" onClick={handleViewInventory}>View Inventory</Button>
             </Card>
 
             <Card className="p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
@@ -352,7 +364,7 @@ const ChemistDashboard = () => {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Sales Report</h3>
               <p className="text-sm text-gray-600 mb-4">View daily and monthly sales reports</p>
-              <Button size="sm">View Reports</Button>
+              <Button size="sm" onClick={handleViewSalesReport}>View Reports</Button>
             </Card>
 
             <Card className="p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
@@ -361,7 +373,7 @@ const ChemistDashboard = () => {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Customer Support</h3>
               <p className="text-sm text-gray-600 mb-4">Manage customer inquiries and support</p>
-              <Button size="sm">Support Center</Button>
+              <Button size="sm" onClick={handleViewCustomerSupport}>Support Center</Button>
             </Card>
           </div>
         </main>

@@ -49,10 +49,10 @@ const LabReports = () => {
           { month: 'Jun', tests: 175, revenue: 700000 }
         ],
         topDoctors: [
-          { name: 'Dr. Sarah Johnson', tests: 45, revenue: 180000 },
-          { name: 'Dr. Michael Chen', tests: 38, revenue: 152000 },
-          { name: 'Dr. Emily Davis', tests: 32, revenue: 128000 },
-          { name: 'Dr. John Smith', tests: 27, revenue: 108000 }
+          { name: 'Dr. Priya Sharma', tests: 45, revenue: 180000 },
+          { name: 'Dr. Arjun Patel', tests: 38, revenue: 152000 },
+          { name: 'Dr. Kavita Singh', tests: 32, revenue: 128000 },
+          { name: 'Dr. Rohan Kumar', tests: 27, revenue: 108000 }
         ]
       },
       quality: {

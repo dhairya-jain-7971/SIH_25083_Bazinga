@@ -11,6 +11,7 @@ import SearchBar from '../components/SearchBar';
 const AllPatients = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+  const [userRole, setUserRole] = useState('doctor');
   const [allPatients, setAllPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,8 +23,13 @@ const AllPatients = () => {
   useEffect(() => {
     // Get user data from localStorage
     const data = localStorage.getItem('userData');
+    const role = localStorage.getItem('userRole');
+    
     if (data) {
       setUserData(JSON.parse(data));
+    }
+    if (role) {
+      setUserRole(role);
     }
 
     // Load all patients data
@@ -34,9 +40,9 @@ const AllPatients = () => {
     const mockPatients = [
       {
         id: 'PAT001',
-        name: 'John Doe',
+        name: 'Dhairya Sharma',
         phone: '+91 9876543210',
-        email: 'john.doe@email.com',
+        email: 'dhairya.sharma@email.com',
         age: 45,
         gender: 'Male',
         bloodGroup: 'O+',
@@ -51,9 +57,9 @@ const AllPatients = () => {
       },
       {
         id: 'PAT002',
-        name: 'Jane Smith',
+        name: 'Sujal Patel',
         phone: '+91 9876543211',
-        email: 'jane.smith@email.com',
+        email: 'sujal.patel@email.com',
         age: 32,
         gender: 'Female',
         bloodGroup: 'A+',
@@ -68,9 +74,9 @@ const AllPatients = () => {
       },
       {
         id: 'PAT003',
-        name: 'Robert Johnson',
+        name: 'Parv Mehta',
         phone: '+91 9876543212',
-        email: 'robert.johnson@email.com',
+        email: 'parv.mehta@email.com',
         age: 58,
         gender: 'Male',
         bloodGroup: 'B+',
@@ -85,9 +91,9 @@ const AllPatients = () => {
       },
       {
         id: 'PAT004',
-        name: 'Maria Garcia',
+        name: 'Akshay Kumar',
         phone: '+91 9876543213',
-        email: 'maria.garcia@email.com',
+        email: 'akshay.kumar@email.com',
         age: 28,
         gender: 'Female',
         bloodGroup: 'AB+',
@@ -102,9 +108,9 @@ const AllPatients = () => {
       },
       {
         id: 'PAT005',
-        name: 'David Wilson',
+        name: 'Jahnavi Reddy',
         phone: '+91 9876543214',
-        email: 'david.wilson@email.com',
+        email: 'jahnavi.reddy@email.com',
         age: 41,
         gender: 'Male',
         bloodGroup: 'O-',
@@ -119,9 +125,9 @@ const AllPatients = () => {
       },
       {
         id: 'PAT006',
-        name: 'Sarah Brown',
+        name: 'Priya Menon',
         phone: '+91 9876543215',
-        email: 'sarah.brown@email.com',
+        email: 'priya.menon@email.com',
         age: 35,
         gender: 'Female',
         bloodGroup: 'A-',
@@ -136,9 +142,9 @@ const AllPatients = () => {
       },
       {
         id: 'PAT007',
-        name: 'Michael Davis',
+        name: 'Arjun Kumar',
         phone: '+91 9876543216',
-        email: 'michael.davis@email.com',
+        email: 'arjun.kumar@email.com',
         age: 52,
         gender: 'Male',
         bloodGroup: 'B-',
@@ -153,9 +159,9 @@ const AllPatients = () => {
       },
       {
         id: 'PAT008',
-        name: 'Lisa Anderson',
+        name: 'Kavita Patel',
         phone: '+91 9876543217',
-        email: 'lisa.anderson@email.com',
+        email: 'kavita.patel@email.com',
         age: 29,
         gender: 'Female',
         bloodGroup: 'AB-',
@@ -170,9 +176,9 @@ const AllPatients = () => {
       },
       {
         id: 'PAT009',
-        name: 'James Wilson',
+        name: 'Rohit Sharma',
         phone: '+91 9876543218',
-        email: 'james.wilson@email.com',
+        email: 'rohit.sharma@email.com',
         age: 67,
         gender: 'Male',
         bloodGroup: 'O+',
@@ -187,9 +193,9 @@ const AllPatients = () => {
       },
       {
         id: 'PAT010',
-        name: 'Emma Thompson',
+        name: 'Anjali Singh',
         phone: '+91 9876543219',
-        email: 'emma.thompson@email.com',
+        email: 'anjali.singh@email.com',
         age: 24,
         gender: 'Female',
         bloodGroup: 'A+',
@@ -325,7 +331,7 @@ const AllPatients = () => {
 
       <div className="flex">
         <Sidebar
-          userRole="provider"
+          userRole={userRole}
           userData={userData}
           onLogout={handleLogout}
         />

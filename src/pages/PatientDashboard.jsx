@@ -53,7 +53,7 @@ const PatientDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <Navbar showAdminPanel={false} />
 
       <div className="flex">
         <Sidebar
@@ -160,7 +160,7 @@ const AppointmentsTab = () => {
   const [appointments, setAppointments] = useState([
     {
       id: 1,
-      doctor: 'Dr. Sarah Johnson',
+      doctor: 'Dr. Dhairya Sharma',
       specialization: 'Cardiologist',
       type: 'Consultation',
       date: '2024-01-15',
@@ -169,7 +169,7 @@ const AppointmentsTab = () => {
     },
     {
       id: 2,
-      doctor: 'Dr. Michael Chen',
+      doctor: 'Dr. Pragati Singh',
       specialization: 'General Physician',
       type: 'Follow-up',
       date: '2024-01-20',
@@ -178,7 +178,7 @@ const AppointmentsTab = () => {
     },
     {
       id: 3,
-      doctor: 'Dr. Emily Davis',
+      doctor: 'Dr. Akshay Kumar',
       specialization: 'Dermatologist',
       type: 'Consultation',
       date: '2024-01-25',
@@ -188,6 +188,8 @@ const AppointmentsTab = () => {
   ]);
 
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showRescheduleModal, setShowRescheduleModal] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [bookingForm, setBookingForm] = useState({
     specialization: '',
     doctor: '',
@@ -197,44 +199,47 @@ const AppointmentsTab = () => {
     symptoms: '',
     notes: ''
   });
+  const [rescheduleForm, setRescheduleForm] = useState({
+    appointmentId: null,
+    newDate: '',
+    newTime: '',
+    reason: ''
+  });
 
   const availableDoctors = {
     'cardiology': [
-      { name: 'Dr. Sarah Johnson', specialization: 'Cardiologist' },
-      { name: 'Dr. Rajesh Gupta', specialization: 'Cardiologist' }
+      { name: 'Dr. Dhairya Sharma', specialization: 'Cardiologist' },
+      { name: 'Dr. Sujal Patel', specialization: 'Cardiologist' }
     ],
     'general': [
-      { name: 'Dr. Michael Chen', specialization: 'General Physician' },
-      { name: 'Dr. Priya Sharma', specialization: 'General Physician' }
+      { name: 'Dr. Pragati Singh', specialization: 'General Physician' },
+      { name: 'Dr. Parv Mehta', specialization: 'General Physician' }
     ],
     'dermatology': [
-      { name: 'Dr. Emily Davis', specialization: 'Dermatologist' },
-      { name: 'Dr. Amit Kumar', specialization: 'Dermatologist' }
+      { name: 'Dr. Akshay Kumar', specialization: 'Dermatologist' },
+      { name: 'Dr. Jahnavi Reddy', specialization: 'Dermatologist' }
     ],
     'orthopedics': [
-      { name: 'Dr. John Smith', specialization: 'Orthopedic Surgeon' },
-      { name: 'Dr. Kavita Patel', specialization: 'Orthopedic Surgeon' }
+      { name: 'Dr. Kavita Patel', specialization: 'Orthopedic Surgeon' },
+      { name: 'Dr. Rohit Sharma', specialization: 'Orthopedic Surgeon' }
     ],
     'pediatrics': [
-      { name: 'Dr. Lisa Wong', specialization: 'Pediatrician' },
-      { name: 'Dr. Ravi Menon', specialization: 'Pediatrician' }
+      { name: 'Dr. Priya Menon', specialization: 'Pediatrician' },
+      { name: 'Dr. Arjun Kumar', specialization: 'Pediatrician' }
     ]
   };
 
   const handleReschedule = (appointmentId) => {
     const appointment = appointments.find(apt => apt.id === appointmentId);
     if (appointment) {
-      const newDate = prompt('Enter new date (YYYY-MM-DD):', appointment.date);
-      const newTime = prompt('Enter new time (HH:MM AM/PM):', appointment.time);
-      
-      if (newDate && newTime) {
-        setAppointments(prev => prev.map(apt => 
-          apt.id === appointmentId 
-            ? { ...apt, date: newDate, time: newTime, status: 'pending' }
-            : apt
-        ));
-        alert('Appointment rescheduled successfully!');
-      }
+      setSelectedAppointment(appointment);
+      setRescheduleForm({
+        appointmentId: appointmentId,
+        newDate: appointment.date,
+        newTime: appointment.time,
+        reason: ''
+      });
+      setShowRescheduleModal(true);
     }
   };
 
@@ -256,6 +261,40 @@ const AppointmentsTab = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleRescheduleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRescheduleForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleRescheduleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!rescheduleForm.newDate || !rescheduleForm.newTime) {
+      alert('Please select both date and time.');
+      return;
+    }
+
+    setAppointments(prev => prev.map(apt =>
+      apt.id === rescheduleForm.appointmentId
+        ? { ...apt, date: rescheduleForm.newDate, time: rescheduleForm.newTime, status: 'pending' }
+        : apt
+    ));
+
+    setShowRescheduleModal(false);
+    setRescheduleForm({
+      appointmentId: null,
+      newDate: '',
+      newTime: '',
+      reason: ''
+    });
+    setSelectedAppointment(null);
+
+    alert('Appointment rescheduled successfully! You will receive a confirmation shortly.');
   };
 
   const handleBookAppointment = (e) => {
@@ -505,6 +544,109 @@ const AppointmentsTab = () => {
           </div>
         </div>
       )}
+
+      {/* Rescheduling Modal */}
+      {showRescheduleModal && selectedAppointment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-900">Reschedule Appointment</h3>
+              <button
+                onClick={() => setShowRescheduleModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <span className="text-2xl">&times;</span>
+              </button>
+            </div>
+
+            {/* Current Appointment Info */}
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <span className="text-blue-400">📅</span>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-blue-700">
+                    <strong>Current Appointment:</strong> {selectedAppointment.doctor} - {selectedAppointment.specialization}
+                  </p>
+                  <p className="text-sm text-blue-700">
+                    <strong>Date & Time:</strong> {new Date(selectedAppointment.date).toLocaleDateString()} at {selectedAppointment.time}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <form onSubmit={handleRescheduleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    New Date *
+                  </label>
+                  <input
+                    type="date"
+                    name="newDate"
+                    value={rescheduleForm.newDate}
+                    onChange={handleRescheduleInputChange}
+                    required
+                    min={new Date().toISOString().split('T')[0]}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    New Time *
+                  </label>
+                  <select
+                    name="newTime"
+                    value={rescheduleForm.newTime}
+                    onChange={handleRescheduleInputChange}
+                    required
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select Time</option>
+                    <option value="9:00 AM">9:00 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="12:00 PM">12:00 PM</option>
+                    <option value="2:00 PM">2:00 PM</option>
+                    <option value="3:00 PM">3:00 PM</option>
+                    <option value="4:00 PM">4:00 PM</option>
+                    <option value="5:00 PM">5:00 PM</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Reason for Rescheduling (Optional)
+                </label>
+                <textarea
+                  name="reason"
+                  value={rescheduleForm.reason}
+                  onChange={handleRescheduleInputChange}
+                  rows="3"
+                  placeholder="Please provide a reason for rescheduling this appointment..."
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+                />
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setShowRescheduleModal(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit">
+                  Reschedule Appointment
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -515,7 +657,7 @@ const DiagnosisTab = () => {
     {
       id: 1,
       date: '2024-01-10',
-      doctor: 'Dr. Sarah Johnson',
+      doctor: 'Dr. Dhairya Sharma',
       condition: 'Hypertension',
       notes: 'Blood pressure reading: 140/90 mmHg. Patient advised to monitor regularly.',
       severity: 'moderate'
@@ -523,7 +665,7 @@ const DiagnosisTab = () => {
     {
       id: 2,
       date: '2023-12-15',
-      doctor: 'Dr. Michael Chen',
+      doctor: 'Dr. Pragati Singh',
       condition: 'Seasonal Allergies',
       notes: 'Allergic rhinitis symptoms. Prescribed antihistamines.',
       severity: 'mild'
@@ -572,7 +714,7 @@ const PrescriptionsTab = () => {
       dosage: '5mg',
       frequency: 'Once daily',
       duration: '30 days',
-      doctor: 'Dr. Sarah Johnson',
+      doctor: 'Dr. Dhairya Sharma',
       date: '2024-01-10',
       status: 'active'
     },
@@ -582,7 +724,7 @@ const PrescriptionsTab = () => {
       dosage: '10mg',
       frequency: 'Once daily as needed',
       duration: '15 days',
-      doctor: 'Dr. Michael Chen',
+      doctor: 'Dr. Pragati Singh',
       date: '2023-12-15',
       status: 'completed'
     }
@@ -627,7 +769,7 @@ const LabDataTab = () => {
       id: 1,
       test: 'Complete Blood Count',
       date: '2024-01-05',
-      lab: 'City Diagnostic Center',
+      lab: 'Sujal Diagnostics',
       status: 'completed',
       results: 'Normal ranges'
     },
@@ -635,7 +777,7 @@ const LabDataTab = () => {
       id: 2,
       test: 'Lipid Profile',
       date: '2023-12-20',
-      lab: 'MedLab Kerala',
+      lab: 'Parv Pathology Lab',
       status: 'completed',
       results: 'Slightly elevated cholesterol'
     }

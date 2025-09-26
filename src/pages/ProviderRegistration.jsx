@@ -125,7 +125,7 @@ const ProviderRegistration = ({ providerType: propProviderType }) => {
       });
 
       if (response.success) {
-        localStorage.setItem('userRole', 'provider');
+        localStorage.setItem('userRole', providerType);
         localStorage.setItem('providerType', providerType);
         localStorage.setItem('userData', JSON.stringify(response.data));
 

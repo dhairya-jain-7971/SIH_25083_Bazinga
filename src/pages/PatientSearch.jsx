@@ -11,6 +11,7 @@ import SearchBar from '../components/SearchBar';
 const PatientSearch = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+  const [userRole, setUserRole] = useState('doctor');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [allPatients, setAllPatients] = useState([]);
@@ -20,8 +21,13 @@ const PatientSearch = () => {
   useEffect(() => {
     // Get user data from localStorage
     const data = localStorage.getItem('userData');
+    const role = localStorage.getItem('userRole');
+    
     if (data) {
       setUserData(JSON.parse(data));
+    }
+    if (role) {
+      setUserRole(role);
     }
 
     // Load all patients data
@@ -176,7 +182,7 @@ const PatientSearch = () => {
 
       <div className="flex">
         <Sidebar
-          userRole="provider"
+          userRole={userRole}
           userData={userData}
           onLogout={handleLogout}
         />

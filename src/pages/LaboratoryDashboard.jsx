@@ -29,7 +29,7 @@ const LaboratoryDashboard = () => {
     const mockTestRequests = [
       {
         id: 'REQ001',
-        patientName: 'John Doe',
+        patientName: 'Kalp',
         patientId: 'PAT001',
         phone: '+91 9876543210',
         testType: 'Blood Test',
@@ -39,7 +39,7 @@ const LaboratoryDashboard = () => {
       },
       {
         id: 'REQ002',
-        patientName: 'Jane Smith',
+        patientName: 'Kalash',
         patientId: 'PAT002',
         phone: '+91 9876543211',
         testType: 'X-Ray',
@@ -49,7 +49,7 @@ const LaboratoryDashboard = () => {
       },
       {
         id: 'REQ003',
-        patientName: 'Robert Johnson',
+        patientName: 'Phales',
         patientId: 'PAT003',
         phone: '+91 9876543212',
         testType: 'MRI Scan',
@@ -83,6 +83,10 @@ const LaboratoryDashboard = () => {
     }
   };
 
+  const handleGenerateReport = () => {
+    navigate('/lab/patient-reports');
+  };
+
   const handleCallPatient = (phone) => {
     window.open(`tel:${phone}`);
   };
@@ -112,7 +116,7 @@ const LaboratoryDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <Navbar showAdminPanel={false} />
 
       <div className="flex">
         <Sidebar
@@ -286,32 +290,14 @@ const LaboratoryDashboard = () => {
           </Card>
 
           {/* Quick Actions */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">📋</span>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Test Results</h3>
-              <p className="text-sm text-gray-600 mb-4">View and manage test results</p>
-              <Button size="sm">View Results</Button>
-            </Card>
-
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-1 gap-6 max-w-md mx-auto">
             <Card className="p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">📊</span>
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Reports</h3>
               <p className="text-sm text-gray-600 mb-4">Generate lab reports</p>
-              <Button size="sm">Generate Report</Button>
-            </Card>
-
-            <Card className="p-6 text-center hover:shadow-md transition-shadow cursor-pointer">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">⚙️</span>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Equipment</h3>
-              <p className="text-sm text-gray-600 mb-4">Manage lab equipment</p>
-              <Button size="sm">View Equipment</Button>
+              <Button size="sm" onClick={handleGenerateReport}>Generate Report</Button>
             </Card>
           </div>
         </main>

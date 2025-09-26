@@ -11,6 +11,7 @@ import SearchBar from '../components/SearchBar';
 const ProviderDashboard = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+  const [userRole, setUserRole] = useState('doctor');
   const [providerType, setProviderType] = useState('doctor');
   const [searchQuery, setSearchQuery] = useState('');
   const [patients, setPatients] = useState([]);
@@ -18,9 +19,14 @@ const ProviderDashboard = () => {
   useEffect(() => {
     // Get user data from localStorage
     const data = localStorage.getItem('userData');
+    const role = localStorage.getItem('userRole');
     const type = localStorage.getItem('providerType');
+    
     if (data) {
       setUserData(JSON.parse(data));
+    }
+    if (role) {
+      setUserRole(role);
     }
     if (type) {
       setProviderType(type);
@@ -39,7 +45,7 @@ const ProviderDashboard = () => {
     const mockPatients = [
       {
         id: 'PAT001',
-        name: 'John Doe',
+        name: 'Ramesh Kumar',
         phone: '+91 9876543210',
         lastVisit: '2024-01-10',
         status: 'active',
@@ -47,7 +53,7 @@ const ProviderDashboard = () => {
       },
       {
         id: 'PAT002',
-        name: 'Jane Smith',
+        name: 'Suresh Patel',
         phone: '+91 9876543211',
         lastVisit: '2024-01-08',
         status: 'active',
@@ -55,7 +61,7 @@ const ProviderDashboard = () => {
       },
       {
         id: 'PAT003',
-        name: 'Robert Johnson',
+        name: 'Akshat Sharma',
         phone: '+91 9876543212',
         lastVisit: '2024-01-05',
         status: 'inactive',
@@ -106,11 +112,11 @@ const ProviderDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <Navbar showAdminPanel={userRole === 'admin'} />
 
       <div className="flex">
         <Sidebar
-          userRole="provider"
+          userRole={userRole}
           userData={userData}
           onLogout={handleLogout}
         />

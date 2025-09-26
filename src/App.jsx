@@ -30,6 +30,13 @@ import SystemReports from './pages/SystemReports.jsx';
 import UserManagement from './pages/UserManagement.jsx';
 import SystemSettings from './pages/SystemSettings.jsx';
 import AuditLogs from './pages/AuditLogs.jsx';
+import PatientReports from './pages/PatientReports.jsx';
+
+// Profile Pages
+import PatientProfile from './pages/PatientProfile.jsx';
+import DoctorProfile from './pages/DoctorProfile.jsx';
+import LaboratoryProfile from './pages/LaboratoryProfile.jsx';
+import ChemistProfile from './pages/ChemistProfile.jsx';
 
 function App() {
   return (
@@ -66,6 +73,10 @@ function App() {
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/admin/settings" element={<SystemSettings />} />
           <Route path="/admin/audit" element={<AuditLogs />} />
+          <Route path="/profile/patient" element={<PatientProfile />} />
+          <Route path="/profile/doctor" element={<DoctorProfile />} />
+          <Route path="/profile/laboratory" element={<LaboratoryProfile />} />
+          <Route path="/profile/chemist" element={<ChemistProfile />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/emergency" element={<Emergency />} />
           <Route path="/support" element={<Support />} />
@@ -75,13 +86,12 @@ function App() {
           <Route path="/provider/patients/search" element={<PatientSearch />} />
           <Route path="/provider/appointments" element={<ProviderAppointments />} />
           <Route path="/provider/patients/all" element={<AllPatients />} />
-          <Route path="/lab/results" element={<LabTestResults />} />
           <Route path="/lab/equipment" element={<LabEquipment />} />
           <Route path="/lab/reports" element={<LabReports />} />
+          <Route path="/lab/patient-reports" element={<PatientReports />} />
         </Routes>
       </div>
     </Router>
   );
 }
-
 export default App;

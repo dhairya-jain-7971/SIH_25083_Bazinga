@@ -11,6 +11,7 @@ import SearchBar from '../components/SearchBar';
 const ProviderAppointments = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+  const [userRole, setUserRole] = useState('doctor');
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,8 +21,13 @@ const ProviderAppointments = () => {
   useEffect(() => {
     // Get user data from localStorage
     const data = localStorage.getItem('userData');
+    const role = localStorage.getItem('userRole');
+    
     if (data) {
       setUserData(JSON.parse(data));
+    }
+    if (role) {
+      setUserRole(role);
     }
 
     // Load appointments data
@@ -38,7 +44,7 @@ const ProviderAppointments = () => {
     const mockAppointments = [
       {
         id: 'APT001',
-        patientName: 'John Doe',
+        patientName: 'Ramesh Kumar',
         patientId: 'PAT001',
         phone: '+91 9876543210',
         date: today.toISOString().split('T')[0],
@@ -51,7 +57,7 @@ const ProviderAppointments = () => {
       },
       {
         id: 'APT002',
-        patientName: 'Jane Smith',
+        patientName: 'Suresh Patel',
         patientId: 'PAT002',
         phone: '+91 9876543211',
         date: today.toISOString().split('T')[0],
@@ -64,7 +70,7 @@ const ProviderAppointments = () => {
       },
       {
         id: 'APT003',
-        patientName: 'Robert Johnson',
+        patientName: 'Akshat Sharma',
         patientId: 'PAT003',
         phone: '+91 9876543212',
         date: today.toISOString().split('T')[0],
@@ -77,7 +83,7 @@ const ProviderAppointments = () => {
       },
       {
         id: 'APT004',
-        patientName: 'Maria Garcia',
+        patientName: 'Priya Menon',
         patientId: 'PAT004',
         phone: '+91 9876543213',
         date: tomorrow.toISOString().split('T')[0],
@@ -90,7 +96,7 @@ const ProviderAppointments = () => {
       },
       {
         id: 'APT005',
-        patientName: 'David Wilson',
+        patientName: 'Arjun Kumar',
         patientId: 'PAT005',
         phone: '+91 9876543214',
         date: tomorrow.toISOString().split('T')[0],
@@ -103,7 +109,7 @@ const ProviderAppointments = () => {
       },
       {
         id: 'APT006',
-        patientName: 'Sarah Brown',
+        patientName: 'Kavita Patel',
         patientId: 'PAT006',
         phone: '+91 9876543215',
         date: nextWeek.toISOString().split('T')[0],
@@ -116,7 +122,7 @@ const ProviderAppointments = () => {
       },
       {
         id: 'APT007',
-        patientName: 'Michael Davis',
+        patientName: 'Rohit Sharma',
         patientId: 'PAT007',
         phone: '+91 9876543216',
         date: '2024-01-08',
@@ -129,7 +135,7 @@ const ProviderAppointments = () => {
       },
       {
         id: 'APT008',
-        patientName: 'Lisa Anderson',
+        patientName: 'Anjali Singh',
         patientId: 'PAT008',
         phone: '+91 9876543217',
         date: '2024-01-09',
@@ -270,7 +276,7 @@ const ProviderAppointments = () => {
 
       <div className="flex">
         <Sidebar
-          userRole="provider"
+          userRole={userRole}
           userData={userData}
           onLogout={handleLogout}
         />
@@ -326,7 +332,6 @@ const ProviderAppointments = () => {
                     value={searchQuery}
                   />
                 </div>
-                <Button>Book New Appointment</Button>
               </div>
 
               <div className="flex flex-wrap gap-4">

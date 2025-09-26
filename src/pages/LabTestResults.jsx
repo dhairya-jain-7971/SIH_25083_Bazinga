@@ -32,7 +32,7 @@ const LabTestResults = () => {
     const mockTestRequests = [
       {
         id: 'TEST001',
-        patientName: 'John Doe',
+        patientName: 'Aarav Kumar',
         patientId: 'PAT001',
         phone: '+91 9876543210',
         testType: 'Blood Test',
@@ -53,11 +53,11 @@ const LabTestResults = () => {
           rbc: '4.2-5.4 million/μL',
           platelets: '150,000-450,000/μL'
         },
-        doctorName: 'Dr. Sarah Johnson'
+        doctorName: 'Dr. Priya Sharma'
       },
       {
         id: 'TEST002',
-        patientName: 'Jane Smith',
+        patientName: 'Ananya Patel',
         patientId: 'PAT002',
         phone: '+91 9876543211',
         testType: 'X-Ray',
@@ -70,11 +70,11 @@ const LabTestResults = () => {
           findings: 'Clear lung fields, normal heart size',
           impression: 'Normal chest X-ray'
         },
-        doctorName: 'Dr. Michael Chen'
+        doctorName: 'Dr. Arjun Patel'
       },
       {
         id: 'TEST003',
-        patientName: 'Robert Johnson',
+        patientName: 'Vihaan Singh',
         patientId: 'PAT003',
         phone: '+91 9876543212',
         testType: 'MRI Scan',
@@ -84,11 +84,11 @@ const LabTestResults = () => {
         status: 'in_progress',
         priority: 'normal',
         results: null,
-        doctorName: 'Dr. Emily Davis'
+        doctorName: 'Dr. Kavita Singh'
       },
       {
         id: 'TEST004',
-        patientName: 'Maria Garcia',
+        patientName: 'Diya Reddy',
         patientId: 'PAT004',
         phone: '+91 9876543213',
         testType: 'Blood Test',
@@ -109,11 +109,11 @@ const LabTestResults = () => {
           hdl: '>40 mg/dL (M), >50 mg/dL (F)',
           triglycerides: '<150 mg/dL'
         },
-        doctorName: 'Dr. Sarah Johnson'
+        doctorName: 'Dr. Priya Sharma'
       },
       {
         id: 'TEST005',
-        patientName: 'David Wilson',
+        patientName: 'Ishaan Gupta',
         patientId: 'PAT005',
         phone: '+91 9876543214',
         testType: 'CT Scan',
@@ -123,11 +123,11 @@ const LabTestResults = () => {
         status: 'pending',
         priority: 'urgent',
         results: null,
-        doctorName: 'Dr. John Smith'
+        doctorName: 'Dr. Rohan Kumar'
       },
       {
         id: 'TEST006',
-        patientName: 'Sarah Brown',
+        patientName: 'Meera Joshi',
         patientId: 'PAT006',
         phone: '+91 9876543215',
         testType: 'Blood Test',
@@ -146,7 +146,7 @@ const LabTestResults = () => {
           t3: '0.8-2.0 ng/mL',
           t4: '5.0-12.0 μg/dL'
         },
-        doctorName: 'Dr. Lisa Wong'
+        doctorName: 'Dr. Arjun Patel'
       }
     ];
 

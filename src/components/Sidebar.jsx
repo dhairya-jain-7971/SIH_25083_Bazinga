@@ -14,12 +14,10 @@ const Sidebar = ({ userRole, userData, onLogout }) => {
   };
 
   const getMenuItems = () => {
-    const providerType = localStorage.getItem('providerType') || 'doctor';
-
     if (userRole === 'patient') {
       return [
         { label: 'Dashboard', path: '/dashboard/patient', icon: '🏠' },
-        { label: 'My Profile', path: '/profile', icon: '👤' },
+        { label: 'My Profile', path: '/profile/patient', icon: '👤' },
         { label: 'Emergency', path: '/emergency', icon: '🚨' },
         { label: 'Help & Support', path: '/support', icon: '❓' },
       ];
@@ -35,10 +33,8 @@ const Sidebar = ({ userRole, userData, onLogout }) => {
     } else if (userRole === 'laboratory') {
       return [
         { label: 'Dashboard', path: '/dashboard/laboratory', icon: '🏠' },
-        { label: 'Test Results', path: '/lab/results', icon: '🧪' },
-        { label: 'Equipment', path: '/lab/equipment', icon: '⚙️' },
         { label: 'Reports', path: '/lab/reports', icon: '📊' },
-        { label: 'My Profile', path: '/profile', icon: '👤' },
+        { label: 'My Profile', path: '/profile/laboratory', icon: '👤' },
       ];
     } else if (userRole === 'chemist') {
       return [
@@ -46,7 +42,7 @@ const Sidebar = ({ userRole, userData, onLogout }) => {
         { label: 'Inventory', path: '/chemist/inventory', icon: '📦' },
         { label: 'Sales Report', path: '/chemist/sales', icon: '💰' },
         { label: 'Customer Support', path: '/chemist/support', icon: '📞' },
-        { label: 'My Profile', path: '/profile', icon: '👤' },
+        { label: 'My Profile', path: '/profile/chemist', icon: '👤' },
       ];
     } else {
       // Default provider (doctor)
@@ -54,7 +50,7 @@ const Sidebar = ({ userRole, userData, onLogout }) => {
         { label: 'Dashboard', path: '/dashboard/doctor', icon: '🏠' },
         { label: 'Patient Search', path: '/provider/patients/search', icon: '🔍' },
         { label: 'Appointments', path: '/provider/appointments', icon: '📅' },
-        { label: 'My Profile', path: '/profile', icon: '👤' },
+        { label: 'My Profile', path: '/profile/doctor', icon: '👤' },
         { label: 'Settings', path: '/settings', icon: '⚙️' },
       ];
     }

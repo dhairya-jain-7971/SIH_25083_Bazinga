@@ -26,32 +26,27 @@ const AdminDashboard = () => {
     // Get user data from localStorage
     const data = localStorage.getItem('userData');
     const role = localStorage.getItem('userRole');
+    
+    // Only allow access if user is already an admin
     if (data && role === 'admin') {
       setUserData(JSON.parse(data));
     } else {
-      // For demo purposes, if no admin user exists, create one
-      const adminData = {
-        id: 'ADMIN001',
-        fullName: 'System Administrator',
-        email: 'admin@swasthyasutra.com',
-        role: 'admin'
-      };
-      localStorage.setItem('userRole', 'admin');
-      localStorage.setItem('userData', JSON.stringify(adminData));
-      setUserData(adminData);
+      // If not admin, redirect to home page
+      navigate('/');
+      return;
     }
 
     // Load mock providers data
     loadProvidersData();
-  }, []);
+  }, [navigate]);
 
   const loadProvidersData = () => {
     const mockProviders = [
       {
         id: 'DOC001',
-        name: 'Dr. John Smith',
+        name: 'Dr. Dhairya Sharma',
         type: 'doctor',
-        email: 'john.smith@example.com',
+        email: 'dhairya.sharma@example.com',
         phone: '+91 9876543210',
         registrationDate: '2024-01-15',
         status: 'active',
@@ -62,9 +57,9 @@ const AdminDashboard = () => {
       },
       {
         id: 'DOC002',
-        name: 'Dr. Sarah Johnson',
+        name: 'Dr. Pragati Singh',
         type: 'doctor',
-        email: 'sarah.johnson@example.com',
+        email: 'pragati.singh@example.com',
         phone: '+91 9876543211',
         registrationDate: '2024-01-10',
         status: 'suspended',
@@ -75,9 +70,9 @@ const AdminDashboard = () => {
       },
       {
         id: 'LAB001',
-        name: 'City Diagnostic Lab',
+        name: 'Sujal Diagnostics',
         type: 'laboratory',
-        email: 'citylab@example.com',
+        email: 'sujal.diagnostics@example.com',
         phone: '+91 9876543212',
         registrationDate: '2024-01-08',
         status: 'active',
@@ -88,9 +83,9 @@ const AdminDashboard = () => {
       },
       {
         id: 'LAB002',
-        name: 'Modern Pathology Lab',
+        name: 'Parv Pathology Lab',
         type: 'laboratory',
-        email: 'modernlab@example.com',
+        email: 'parv.pathology@example.com',
         phone: '+91 9876543213',
         registrationDate: '2024-01-12',
         status: 'active',
@@ -101,9 +96,9 @@ const AdminDashboard = () => {
       },
       {
         id: 'CHEM001',
-        name: 'HealthPlus Pharmacy',
+        name: 'Akshay Medical Store',
         type: 'chemist',
-        email: 'healthplus@example.com',
+        email: 'akshay.medical@example.com',
         phone: '+91 9876543214',
         registrationDate: '2024-01-05',
         status: 'active',
@@ -114,9 +109,9 @@ const AdminDashboard = () => {
       },
       {
         id: 'CHEM002',
-        name: 'LifeCare Chemist',
+        name: 'Jahnavi Pharmacy',
         type: 'chemist',
-        email: 'lifecare@example.com',
+        email: 'jahnavi.pharmacy@example.com',
         phone: '+91 9876543215',
         registrationDate: '2024-01-18',
         status: 'suspended',

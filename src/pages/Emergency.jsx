@@ -17,9 +17,14 @@ const Emergency = () => {
     const data = localStorage.getItem('userData');
     const role = localStorage.getItem('userRole');
     
-    if (data && role) {
-      setUserData(JSON.parse(data));
+    if (role) {
       setUserRole(role);
+      if (data) {
+        setUserData(JSON.parse(data));
+      } else {
+        // Create minimal user data if missing
+        setUserData({ fullName: 'User', email: 'user@example.com' });
+      }
     } else {
       navigate('/');
     }
@@ -104,7 +109,7 @@ const Emergency = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
+      <Navbar showAdminPanel={userRole === 'admin'} />
 
       <div className="flex">
         <Sidebar
