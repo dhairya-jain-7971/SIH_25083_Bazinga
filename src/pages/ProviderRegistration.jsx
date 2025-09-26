@@ -20,6 +20,7 @@ const ProviderRegistration = ({ providerType: propProviderType }) => {
     specialization: '',
     experience: '',
     address: '',
+    village: '',
     city: '',
     state: 'Kerala',
     pincode: '',
@@ -278,7 +279,7 @@ const ProviderRegistration = ({ providerType: propProviderType }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
-      <Navbar showBackButton={true} onBackClick={handleBack} />
+      <Navbar showBackButton={true} onBackClick={handleBack} showAdminPanel={false} />
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
@@ -342,9 +343,19 @@ const ProviderRegistration = ({ providerType: propProviderType }) => {
                 required
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormInput
-                  label="City"
+                  label="Village/Town"
+                  name="village"
+                  type="text"
+                  value={formData.village}
+                  onChange={handleInputChange}
+                  error={errors.village}
+                  placeholder="Enter village or town name"
+                />
+
+                <FormInput
+                  label="City/District"
                   name="city"
                   type="text"
                   value={formData.city}
@@ -352,7 +363,9 @@ const ProviderRegistration = ({ providerType: propProviderType }) => {
                   error={errors.city}
                   required
                 />
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormInput
                   label="State"
                   name="state"

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/image 53.png';
 
-const Navbar = ({ showBackButton = false, onBackClick }) => {
+const Navbar = ({ showBackButton = false, onBackClick, showAdminPanel = true }) => {
   const navigate = useNavigate();
   const [showAdminButton, setShowAdminButton] = useState(false);
   const [stats, setStats] = useState({
@@ -13,14 +13,16 @@ const Navbar = ({ showBackButton = false, onBackClick }) => {
   });
 
   useEffect(() => {
-    // Check if user is logged in as admin
+    // Check if user is logged in as admin and if admin panel should be shown on this page
     const userRole = localStorage.getItem('userRole');
-    if (userRole === 'admin') {
+    if (userRole === 'admin' && showAdminPanel) {
       setShowAdminButton(true);
       // Load mock stats
       loadStats();
+    } else {
+      setShowAdminButton(false);
     }
-  }, []);
+  }, [showAdminPanel]);
 
   const loadStats = () => {
     // Mock stats - in real app, this would come from API

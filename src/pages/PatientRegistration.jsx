@@ -16,6 +16,7 @@ const PatientRegistration = () => {
     dateOfBirth: '',
     gender: '',
     address: '',
+    village: '',
     city: '',
     state: 'Kerala',
     pincode: '',
@@ -26,6 +27,7 @@ const PatientRegistration = () => {
     bloodGroup: '',
     allergies: '',
     currentMedications: '',
+    medicalHistory: [],
   });
 
   const [errors, setErrors] = useState({});
@@ -60,6 +62,60 @@ const PatientRegistration = () => {
         governmentId: ''
       }));
     }
+  };
+
+  const handleMedicalHistoryUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const maxFiles = 5;
+    const maxSize = 10 * 1024 * 1024; // 10MB per file
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+
+    // Validate files
+    const validFiles = [];
+    const fileErrors = [];
+
+    files.forEach((file, index) => {
+      if (validFiles.length >= maxFiles) {
+        fileErrors.push(`Maximum ${maxFiles} files allowed`);
+        return;
+      }
+
+      if (file.size > maxSize) {
+        fileErrors.push(`${file.name} is too large (max 10MB)`);
+        return;
+      }
+
+      if (!allowedTypes.includes(file.type)) {
+        fileErrors.push(`${file.name} has invalid format (only JPG, PNG, PDF allowed)`);
+        return;
+      }
+
+      validFiles.push(file);
+    });
+
+    if (fileErrors.length > 0) {
+      setErrors(prev => ({
+        ...prev,
+        medicalHistory: fileErrors.join(', ')
+      }));
+    } else {
+      setErrors(prev => ({
+        ...prev,
+        medicalHistory: ''
+      }));
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      medicalHistory: [...prev.medicalHistory, ...validFiles]
+    }));
+  };
+
+  const removeMedicalHistoryFile = (indexToRemove) => {
+    setFormData(prev => ({
+      ...prev,
+      medicalHistory: prev.medicalHistory.filter((_, index) => index !== indexToRemove)
+    }));
   };
 
   const validateForm = () => {
@@ -134,7 +190,7 @@ const PatientRegistration = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
-      <Navbar showBackButton={true} onBackClick={handleBack} />
+      <Navbar showBackButton={true} onBackClick={handleBack} showAdminPanel={false} />
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
@@ -244,9 +300,19 @@ const PatientRegistration = () => {
                 required
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormInput
-                  label="City"
+                  label="Village/Town"
+                  name="village"
+                  type="text"
+                  value={formData.village}
+                  onChange={handleInputChange}
+                  error={errors.village}
+                  placeholder="Enter village or town name"
+                />
+
+                <FormInput
+                  label="City/District"
                   name="city"
                   type="text"
                   value={formData.city}
@@ -254,7 +320,9 @@ const PatientRegistration = () => {
                   error={errors.city}
                   required
                 />
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormInput
                   label="State"
                   name="state"
@@ -360,6 +428,81 @@ const PatientRegistration = () => {
                 onChange={handleInputChange}
                 placeholder="List current medications"
               />
+
+              {/* Medical History Upload Section */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm0 2h12v8H4V6z" clipRule="evenodd" />
+                    <path d="M9 8a1 1 0 011-1h4a1 1 0 110 2h-4a1 1 0 01-1-1zM9 12a1 1 0 011-1h4a1 1 0 110 2h-4a1 1 0 01-1-1zM6 8a1 1 0 100 2 1 1 0 000-2zM6 12a1 1 0 100 2 1 1 0 000-2z" />
+                  </svg>
+                  Previous Medical History (Optional)
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Upload any previous medical records, test reports, prescriptions, or health documents you have. This will help healthcare providers better understand your medical background.
+                </p>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Upload Medical Documents
+                    </label>
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*,.pdf"
+                      onChange={handleMedicalHistoryUpload}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Supported formats: JPG, PNG, PDF | Max 5 files | Max 10MB per file
+                    </p>
+                    {errors.medicalHistory && (
+                      <p className="text-red-500 text-sm mt-1">{errors.medicalHistory}</p>
+                    )}
+                  </div>
+
+                  {/* Display uploaded files */}
+                  {formData.medicalHistory.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700 mb-2">Uploaded Files:</h4>
+                      <div className="space-y-2">
+                        {formData.medicalHistory.map((file, index) => (
+                          <div key={index} className="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-200">
+                            <div className="flex items-center space-x-3">
+                              <div className="flex-shrink-0">
+                                {file.type === 'application/pdf' ? (
+                                  <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                                  </svg>
+                                ) : (
+                                  <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                                  </svg>
+                                )}
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-900">{file.name}</p>
+                                <p className="text-xs text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeMedicalHistoryFile(index)}
+                              className="text-red-600 hover:text-red-800 p-1"
+                              title="Remove file"
+                            >
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
 
               {errors.submit && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
